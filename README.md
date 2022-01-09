@@ -1,4 +1,6 @@
 # Wordle-Solver
+Averages 3.8 guesses to solve
+
 Solves Wordles using a greedy algorithm. Also allows you to play a command line version of wordle. Try playing the game in one window and 
 having the solver open in the other window. Typically takes around 3-5 guesses.
 
