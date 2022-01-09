@@ -62,33 +62,53 @@ f = open("possiblewords.txt","r")
 possiblewords = [i.strip() for i in f.readlines()]
 wordle = Wordle(words,possiblewords)
 maxguesses = 6
-if playing:
-    guesses = 0
-    correctword = random.choice(possiblewords)
+simulating = False
+if not simulating:
+    if playing:
+        guesses = 0
+        correctword = random.choice(possiblewords)
 
-    while guesses<=6:
+        while guesses<=6:
 
-        guesses+=1
-        guess = input("What is your guess?")
-        colours = wordle.ComputeColours(guess,correctword)
-        print(colours)
-        print(guess)
-        if guess == correctword:
-            break
-    if guesses<=6:
-        print("Well done!")
+            guesses+=1
+            guess = input("What is your guess?")
+            colours = wordle.ComputeColours(guess,correctword)
+            print(colours)
+            print(guess)
+            if guess == correctword:
+                break
+        if guesses<=6:
+            print("Well done!")
+        else:
+            print("Too many guesses")
     else:
-        print("Too many guesses")
+        currentword = "serai"
+        while True:
+            print(currentword)
+            colourcode = input("Colour Combination:")
+            wordle.play(currentword,colourcode)
+            savedword = currentword
+            currentword = wordle.getnextword()
+            if currentword==savedword:
+                break
+        print(f'Success! The word is {currentword}')
 else:
-    currentword = "serai"
-    while True:
-        print(currentword)
-        colourcode = input("Colour Combination:")
-        wordle.play(currentword,colourcode)
-        savedword = currentword
-        currentword = wordle.getnextword()
-        if currentword==savedword:
-            break
-    print(f'Success! The word is {currentword}')
-    
-
+    simulations = 10000
+    l = 0
+    rounds =0 
+    for i in range(simulations):
+        playingwordle = Wordle(words,possiblewords)
+        solvingwordle = Wordle(words,possiblewords)
+        correctword = random.choice(possiblewords)
+        guesses = 0
+        currentword = "serai"
+        while True:
+            solvingwordle.play(currentword,wordle.ComputeColours(currentword,correctword))
+            guesses+=1
+            currentword = solvingwordle.getnextword()
+            if currentword == correctword:
+                print(guesses+1)
+                l+=(guesses+1)
+                rounds+=1
+                break
+        print(l/rounds)
